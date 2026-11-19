@@ -1,0 +1,40 @@
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
+  <!-- Instalador por usuario (sin permisos de administrador): %LOCALAPPDATA%\my-jira-work-time.
+       Variables: Src (carpeta Release), Version, Icon. -->
+  <Package Name="my-jira-work-time" Manufacturer="my-jira-work-time" Version="$(Version)"
+           UpgradeCode="6B1D2C0E-4F7A-4C55-9B1E-3A2D7C8E5F10" Scope="perUser"
+           Language="1034" Compressed="yes">
+    <MajorUpgrade DowngradeErrorMessage="Ya hay instalada una versión más reciente de my-jira-work-time." />
+    <MediaTemplate EmbedCab="yes" />
+    <Icon Id="AppIcon.ico" SourceFile="$(Icon)" />
+    <Property Id="ARPPRODUCTICON" Value="AppIcon.ico" />
+
+    <StandardDirectory Id="LocalAppDataFolder">
+      <Directory Id="INSTALLFOLDER" Name="my-jira-work-time">
+        <Files Include="$(Src)\**">
+          <Exclude Files="$(Src)\gestion_time_proyect.exe" />
+        </Files>
+        <Component Id="MainExe" Guid="*">
+          <File Id="MainExeFile" Source="$(Src)\gestion_time_proyect.exe" KeyPath="yes" />
+        </Component>
+      </Directory>
+    </StandardDirectory>
+
+    <StandardDirectory Id="ProgramMenuFolder">
+      <Component Id="StartMenuShortcut" Guid="*">
+        <Shortcut Id="StartMenuLnk" Name="my-jira-work-time" Target="[INSTALLFOLDER]gestion_time_proyect.exe"
+                  WorkingDirectory="INSTALLFOLDER" Icon="AppIcon.ico" />
+        <RegistryValue Root="HKCU" Key="Software\my-jira-work-time" Name="StartMenu" Type="integer" Value="1" KeyPath="yes" />
+      </Component>
+    </StandardDirectory>
+
+    <StandardDirectory Id="DesktopFolder">
+      <Component Id="DesktopShortcut" Guid="*">
+        <Shortcut Id="DesktopLnk" Name="my-jira-work-time" Target="[INSTALLFOLDER]gestion_time_proyect.exe"
+                  WorkingDirectory="INSTALLFOLDER" Icon="AppIcon.ico" />
+        <RegistryValue Root="HKCU" Key="Software\my-jira-work-time" Name="Desktop" Type="integer" Value="1" KeyPath="yes" />
+      </Component>
+    </StandardDirectory>
+
+  </Package>
+</Wix>
